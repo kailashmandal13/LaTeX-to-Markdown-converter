@@ -1,0 +1,16 @@
+# Ignore output directory
+output/
+
+# Ignore Flex and Bison generated files
+*.tab.c
+*.tab.h
+lex.yy.c
+
+# Ignore compiled executable
+latex_to_md
+
+# Ignore temporary files
+*.o
+*.log
+*.aux
+*.swp

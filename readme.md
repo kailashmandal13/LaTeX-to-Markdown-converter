@@ -1,25 +1,90 @@
 # LaTeX to Markdown Converter
 
-This project is an implementation of a LaTeX to Markdown converter as part of the COP701 course at IIT Delhi. The project uses Flex for lexical analysis and Bison for parsing, generating equivalent Markdown output from LaTeX input.
+## Overview
+
+This project is a LaTeX to Markdown converter, designed as part of the Software Lab course at IIT Delhi. The converter takes a LaTeX file as input and outputs a Markdown file with properly formatted content. The converter handles common LaTeX structures such as sections, subsections, bold, italics, code blocks, tables, and lists.
 
 ## Features
 
-- **Section to Headings**: Converts `\section{}` and `\subsection{}` to `#` and `##` Markdown headings.
-- **Italics and Bold**: Converts `\textit{}` and `\textbf{}` to `_` and `**` in Markdown.
-- **Hyperlinks**: Converts `\href{}{}` to `[text](url)` in Markdown.
-- **Lists**: Converts `itemize` and `enumerate` environments to unordered and ordered lists.
-- **Code Blocks**: Converts `verbatim` environment to Markdown code blocks.
-- **Paragraphs**: Handles `\par` as Markdown paragraphs.
-- **Horizontal Lines**: Converts `\hrule` to `---` in Markdown.
+- Convert LaTeX sections, subsections, and subsubsections to Markdown headings.
+- Translate LaTeX bold and italic text to Markdown bold and italics.
+- Process LaTeX `verbatim` environments into Markdown code blocks.
+- Handle LaTeX tables and lists (ordered and unordered).
+- Convert LaTeX images into Markdown image syntax.
 
 ## Project Structure
 
-- `latex2md.l`: The Flex file responsible for lexical analysis and generating Markdown from LaTeX.
-- `README.md`: This documentation file.
 
-## How to Run
+## Requirements
 
-1. **Build the Lexer:**
-   ```bash
-   flex latex2md.l
-   gcc lex.yy.c -o latex2md -lfl
+- Flex
+- Bison
+- GCC
+
+## Setup Instructions
+
+1. **Clone the Repository**:
+    ```bash
+    git clone https://github.com/your-username/latex2md.git
+    cd latex2md
+    ```
+
+2. **Generate Parser Files**:
+    ```bash
+    bison -d latex2md.y
+    mv y.tab.h parser.h
+    ```
+
+3. **Run Flex**:
+    ```bash
+    flex latex2md.l
+    ```
+
+4. **Compile**:
+    ```bash
+    gcc lex.yy.c y.tab.c -o latex2md -lfl
+    ```
+
+5. **Run the Converter**:
+    ```bash
+    ./latex2md < input.tex > output.md
+    ```
+
+## Usage
+
+1. **Prepare Your LaTeX File**:
+   Ensure your LaTeX file is correctly formatted with supported structures.
+
+2. **Run the Converter**:
+   Run the `latex2md` executable with your LaTeX file as input to generate the corresponding Markdown file.
+
+3. **View the Output**:
+   Open the generated `output.md` file to see the converted Markdown content.
+
+## Example
+
+Given the following LaTeX input:
+
+```latex
+\section{Introduction}
+Welcome to the LaTeX to Markdown converter!
+
+\subsection{Features}
+- Converts sections to headings.
+- Handles lists, tables, and code blocks.
+
+\begin{verbatim}
+def example_function():
+    print("This is a code block")
+\end{verbatim}
+
+
+## The output in Markdown will be:
+
+## Introduction
+Welcome to the LaTeX to Markdown converter!
+
+### Features
+- Converts sections to headings.
+- Handles lists, tables, and code blocks.
+

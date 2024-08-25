@@ -1,0 +1,26 @@
+\hypertarget{structASTNode}{}\doxysection{ASTNode Struct Reference}
+\label{structASTNode}\index{ASTNode@{ASTNode}}
+
+
+Collaboration diagram for ASTNode\+:
+% FIG 0
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structASTNode_a34086f3bc5af008f08f255c8ec57ba21}\label{structASTNode_a34086f3bc5af008f08f255c8ec57ba21}} 
+Node\+Type {\bfseries type}
+\item 
+\mbox{\Hypertarget{structASTNode_ad6618f7dd173faa08719d6b1af146671}\label{structASTNode_ad6618f7dd173faa08719d6b1af146671}} 
+char $\ast$ {\bfseries content}
+\item 
+\mbox{\Hypertarget{structASTNode_ae75b299ea64dd241ff5c65cf0e42f734}\label{structASTNode_ae75b299ea64dd241ff5c65cf0e42f734}} 
+struct \mbox{\hyperlink{structASTNode}{ASTNode}} $\ast$$\ast$ {\bfseries children}
+\item 
+\mbox{\Hypertarget{structASTNode_a6b6faf1acab24bbf1347a82f62d8b1e2}\label{structASTNode_a6b6faf1acab24bbf1347a82f62d8b1e2}} 
+int {\bfseries children\+\_\+count}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+l2m\+\_\+ast.\+h\end{DoxyCompactItemize}

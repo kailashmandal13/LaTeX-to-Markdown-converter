@@ -1,0 +1,34 @@
+\hypertarget{md_readme_autotoc_md5}{}\doxysection{Overview}\label{md_readme_autotoc_md5}
+This project is a La\+TeX to Markdown converter, designed as part of the Software Lab course at IIT Delhi. The converter takes a La\+TeX file as input and outputs a Markdown file with properly formatted content. The converter handles common La\+TeX structures such as sections, subsections, bold, italics, code blocks, tables, and lists.\hypertarget{md_readme_autotoc_md6}{}\doxysection{Features}\label{md_readme_autotoc_md6}
+
+\begin{DoxyItemize}
+\item Convert La\+TeX sections, subsections, and subsubsections to Markdown headings.
+\item Translate La\+TeX bold and italic text to Markdown bold and italics.
+\item Process La\+TeX {\ttfamily verbatim} environments into Markdown code blocks.
+\item Handle La\+TeX tables and lists (ordered and unordered).
+\item Convert La\+TeX images into Markdown image syntax.
+\end{DoxyItemize}\hypertarget{md_readme_autotoc_md7}{}\doxysection{Project Structure}\label{md_readme_autotoc_md7}
+\hypertarget{md_readme_autotoc_md8}{}\doxysection{Requirements}\label{md_readme_autotoc_md8}
+
+\begin{DoxyItemize}
+\item Flex
+\item Bison
+\item GCC
+\end{DoxyItemize}\hypertarget{md_readme_autotoc_md9}{}\doxysection{Setup Instructions}\label{md_readme_autotoc_md9}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Clone the Repository}}\+: \`{}\`{}\`{}bash git clone \href{https://github.com/your-username/latex2md.git}{\texttt{ https\+://github.\+com/your-\/username/latex2md.\+git}} cd latex2md \`{}\`{}\`{}
+\item {\bfseries{Generate Parser Files}}\+: \`{}\`{}\`{}bash bison -\/d latex2md.\+y mv y.\+tab.\+h \mbox{\hyperlink{parser_8h_source}{parser.\+h}} \`{}\`{}\`{}
+\item {\bfseries{Run Flex}}\+: \`{}\`{}\`{}bash flex latex2md.\+l \`{}\`{}\`{}
+\item {\bfseries{Compile}}\+: \`{}\`{}\`{}bash gcc lex.\+yy.\+c y.\+tab.\+c -\/o latex2md -\/lfl \`{}\`{}\`{}
+\item {\bfseries{Run the Converter}}\+: \`{}\`{}\`{}bash ./latex2md $<$ input.\+tex $>$ output.\+md \`{}\`{}\`{}
+\end{DoxyEnumerate}\hypertarget{md_readme_autotoc_md10}{}\doxysection{Usage}\label{md_readme_autotoc_md10}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Prepare Your La\+TeX File}}\+: Ensure your La\+TeX file is correctly formatted with supported structures.
+\item {\bfseries{Run the Converter}}\+: Run the {\ttfamily latex2md} executable with your La\+TeX file as input to generate the corresponding Markdown file.
+\item {\bfseries{View the Output}}\+: Open the generated {\ttfamily output.\+md} file to see the converted Markdown content.
+\end{DoxyEnumerate}\hypertarget{md_readme_autotoc_md11}{}\doxysection{Example}\label{md_readme_autotoc_md11}
+Given the following La\+TeX input\+:
+
+\`{}\`{}\`{}latex 

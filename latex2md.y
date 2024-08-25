@@ -19,9 +19,12 @@ extern char *yytext;
 }
 
 /* Token declarations from Flex */
-%token SECTION SUBSECTION SUBSUBSEC BRACT_L BRACT_R BOLD ITALIC ITEM IMAGE HYPERLINK HLINE PARAGRAPH BKSLS
+%token SECTION SUBSECTION SUBSUBSEC BRACT_L BRACT_R BOLD ITALIC ITEM IMAGE HYPERLINK HLINE PARAGRAPH SQ_BL SQ_BR BACKSLS HL
 %token BEG_ITEMIZE END_ITEMIZE BEG_CODE END_CODE BEG_TAB END_TAB BEG_ENUM END_ENUM TAB_CELL_SEP ROW_END
-%token <string> TEXT
+%token <string> TEXT 
+
+%type <string> code_part text sentence row row_area sentn
+
 
 %%
 
@@ -44,8 +47,9 @@ latex :
     | href
     | enumerate
     | itemize
-    | code_block
-    | tabular
+    | code_part
+    | paragraph
+    | tabular;
 
     
 section:
@@ -55,9 +59,9 @@ subsection:
 subsubsection:
     SUBSUBSEC BRACT_L TEXT BRACT_R {printf("### %s\n", $3);};
 textbf:
-    BOLD TEXT {printf("**%s**\n", $2);};
+    BOLD BRACT_L TEXT BRACT_R {printf("**%s**\n", $3);};
 textit:
-    ITALIC TEXT {printf("_%s_\n", $2);};
+    ITALIC BRACT_L TEXT BRACT_R {printf("_%s_\n", $3);};
 href:
     HYPERLINK BRACT_L TEXT BRACT_R BRACT_L TEXT BRACT_R {printf("%s%s\n",$3,$6);};
 par:
@@ -65,10 +69,10 @@ par:
 hrule:
     HLINE {printf("\n---------\n");};
 includegraphics:
-    IMAGE TEXT BRACT_L TEXT BRACT_R {printf("![Image %s](%s)",$2,$4);};
+    IMAGE SQ_BL TEXT BACKSLS TEXT SQ_BR BRACT_L TEXT BRACT_R {printf("![Image](%s)\n",$8);};
 
-code_block:
-    BEG_CODE TEXT END_CODE { printf("```\n%s\n```\n", $2);};
+code_part:
+    BEG_CODE sentence END_CODE { printf("\n```\n %s\n```\n", $2);};
 
 /* list:
     ordered_list
@@ -92,14 +96,61 @@ unord_item_list:
 
 
 tabular:
-    BEG_TAB rows END_TAB { printf("\n"); };
-rows:
-    row
-    | rows row;
+    BEG_TAB BRACT_L columns BRACT_R actual_data END_TAB { printf("\n"); };
+
+columns:
+    TEXT
+    | columns TEXT;
+actual_data:
+    HL row_area HL  { printf("\n"); }
+    | row_area;
+row_area:
+    row ROW_END { printf("| %s |\n", $1); free($1);}
+    | row_area HL row ROW_END { printf("| %s |\n| --- | --- |\n", $3); free($3);}
+    | row_area row ROW_END { printf("| %s |\n", $2); free($2); };
 row:
-    TEXT TAB_CELL_SEP TEXT ROW_END { printf("| %s | %s |\n", $1, $3); };
+    sentn { $$ = $1; }
+    | row TAB_CELL_SEP sentn {
+        size_t len = strlen($1) + strlen($3) + 4;  // 4 for " | " and null terminator
+        $$ = malloc(len);
+        if ($$ != NULL) {
+            sprintf($$, "%s | %s", $1, $3);       // Replacing & with |
+        }
+        free($1);
+        free($3);
+    }
+    ;
+sentn:
+    text { $$ = strdup($1); }
+    | sentn TAB_CELL_SEP text {
+        size_t len = strlen($1) + 2 + strlen($3) + 1;
+        $$ = malloc(len);
+        if ($$ != NULL) {
+            sprintf($$, "%s | %s", $1, $3);            // Replacing & with |
+        }
+        free($1);
+        free($3);
+    }
+    | sentn text {
+        size_t len = strlen($1) + strlen($2) + 1;
+        $$ = malloc(len);
+        if ($$ != NULL) {
+            sprintf($$, "%s%s", $1, $2);
+        }
+        free($1);
+        free($2);
+    }
+    ;
 
-
+paragraph:
+    sentence {printf("%s", $1);}
+    ;
+sentence:
+    text {$$ = $1;}
+    | sentence text {$$ = strcat($1, $2);}
+    ;
+text:
+    TEXT { $$ = strdup($1);};
 
 
 

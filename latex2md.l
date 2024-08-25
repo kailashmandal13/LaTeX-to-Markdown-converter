@@ -13,9 +13,11 @@ extern void yyerror(const char *s);
 \\section                       { return SECTION; }
 \\subsection                    { return SUBSECTION; }
 \\subsubsection                 { return SUBSUBSEC; }
-\\                              { return BKSLS; }
+\\                              { return BACKSLS; }
 \{                              { return BRACT_L; }
 \}                              { return BRACT_R; }
+\[                              { return SQ_BL; }
+\]                              { return SQ_BR; }
 
 \\textbf                        { return BOLD; }
 \\textit                        { return ITALIC; }
@@ -28,20 +30,23 @@ extern void yyerror(const char *s);
 \\begin\{enumerate\}            { return BEG_ENUM;/* this will handle the start of enumerate list */ }
 \\end\{enumerate\}              { return END_ENUM;/* This will handle end of enumerate list */ }
 
-\\begin\{verbatim\}              { return BEG_CODE;/* this will handle the start of code block */ }             
-\\end\{verbatim\}                { return END_CODE;/* This will handle end of code block */ }
+"\\begin{verbatim}"             { return BEG_CODE;/* this will handle the start of code block */ }             
+"\\end{verbatim}"               { return END_CODE;/* This will handle end of code block */ }
 
 \\includegraphics                { return IMAGE; }
 
-\\begin\{tabular\}               { return BEG_TAB;/* this will handle the start table */ }
-\\end\{tabular\}                   { return END_TAB;/* this will handle the start table */ }
-\&                              { return TAB_CELL_SEP; }
+"\\begin{tabular}"           { return BEG_TAB;/* this will handle the start table */ }
+"\\end{tabular}"                   { return END_TAB;/* this will handle the start table */ }
+"&"                              { return TAB_CELL_SEP; }
 \\\\[^\n]*                      { return ROW_END; }
+"\\hline"                         { return HL; }
 
-[a-zA-Z0-9:/.\@,_()!+%""-=][a-zA-Z0-9:=.\_()!+%""-@, \t\n]* { /* Handle newlines i text */  yylval.string = strdup(yytext); 
+[a-zA-Z0-9:/\.\@,_()!+%""-=][a-zA-Z0-9:=\.\_()!+%""-@, \t\n]* { /* Handle newlines i text */  yylval.string = strdup(yytext); 
                             return TEXT; }
-                            
+
 \\href                           { return HYPERLINK; }
+
+
 
 [ \t\n]+                   { /* ignore whitespace */ }
 \%[^\n]*                  { /* ignore comments */ }
